@@ -1,4 +1,6 @@
 #include <iostream>
+#include "ann.cpp"
+
 using namespace std;
 
 float ACCELERATION = 2.0;  // but could be randomized
@@ -33,8 +35,17 @@ void lander::control(void){
      // calculates the burn - vertical adjustments
      // and the thrust - horizontal adjustments
      // both use fuel
-     burn = 1.0;
-     thrust = 0;
+//     burn = 20.0;
+//     thrust = 0;
+    cout << "Burn? ";
+    cin >> burn;
+    cout << "Thrust? ";
+    cin >> thrust;
+            std::cout << " weights";
+    neuron bob;
+    bob.randomize_all_weights();
+    
+    
 }
 
 
@@ -80,7 +91,7 @@ void lander::print(void){
      //  For command line version
      cout << "Height: " << height << "  "; 
      cout << "Y-Velocity: " << Yvelocity << "  ";     
-     cout << "Position: " << xPosition << "  ";
+     cout << "X-Position: " << xPosition << "  ";
      cout << "X-Velocity: " << Xvelocity << "   ";
      cout << "Fuel: " << fuel<< endl;
      
