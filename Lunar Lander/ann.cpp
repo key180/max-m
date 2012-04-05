@@ -8,6 +8,7 @@
 #include <math.h>
 #include <iostream>
 #include "ann.h"
+#include <cstdlib>
 using namespace std;
 
 void neuron::test(){
