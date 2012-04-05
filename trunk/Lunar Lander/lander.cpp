@@ -19,6 +19,7 @@ float lrand(void); // random 0-1
 
 #include "ann.h"
 #include "lander.h"
+#include <fstream>
 
 
 class individual{
@@ -63,66 +64,58 @@ individual::individual(){
     final_ins[1][6] = -.8; //bias thrust
 }
 
+float test_weights_fitness(individual test_weights);
+
 int main() {
     const int GEN = 100; // # of generations
+    const int POPSIZE = 100;
+    
     srand(time(NULL));
+    ofstream fileout;
+    
+    float fitnesspergen[GEN];
+    individual current;
+    individual test;
+    
+    for(int gen = 0; gen < GEN; gen++){
+        
+        
+       // fitnesspergen[gen] = test_weights_fitness(population[0]); // Change to best fitness in population
+        
+    }
+    
+    fileout.open("fit_per_gen.txt");
+    for (int gen = 0; gen < GEN; gen++) {
+        fileout << gen << ", " << fitnesspergen[gen] << endl;
+    }
+    fileout.close();
+    
+    return 0;
+}
+
+float test_weights_fitness(individual test_weights) {
     lander l;
     network test_network;
     
-    float fitnesspergen[GEN];
+    test_network.set_weights(test_weights.in, test_weights.final_ins);
+    //test_network.print_network_weights();
     
-    
-    for(int gen = 0; gen < GEN; gen++){
-
-        //neural network code
-        test_network.randomize_network_weights();
-        test_network.print_network_weights();
-
-        //Setup array of zero weights to feed network - 
-        float in[2][NODES][NODES + 1]; // 3D array [column][node in column][weight in column]
-        float final_ins[2][NODES + 1];
-
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < NODES; j++) {
-                for (int k = 0; k < NODES + 1; k++) {
-                    in[i][j][k] = 0;
-                }
-            }
-        }
-
-        for (int j = 0; j < 2; j++) {
-            for (int k = 0; k < NODES + 1; k++) {
-                final_ins[j][k] = 0;
-            }
-        }
-        test_network.set_weights(in, final_ins);
-        test_network.print_network_weights();
-
-
-
-
-        //main loop run the lunar lander game
-        while (!l.landed_test()) {
-            l.update(test_network); // update position and velocity
-            l.print();
-            l.test(); // test for landing/crash
-        }
-
-        if (l.landed_test() == 1) {
-            cout << "$$$$SAFE$$$$" << endl;
-        }
-        if (l.landed_test() == 2) {
-            cout << "$$$$CRASH$$$$" << endl;
-        }
-        fitnesspergen[gen] = l.get_fitness();
-
-        l = *(new lander());
+    //main loop run the lunar lander game
+    while (!l.landed_test()) {
+        l.update(test_network); // update position and velocity
+        //l.print();
+        l.test(); // test for landing/crash
     }
-    for (int gen = 0; gen < GEN; gen++) {
-        cout << "Fitness: " << fitnesspergen[gen];
+
+    if (l.landed_test() == 1) {
+        //            cout << "$$$$SAFE$$$$" << endl;
     }
-    
-    return 0;
+    if (l.landed_test() == 2) {
+        //            cout << "$$$$CRASH$$$$" << endl;
+    }
+
+    return l.get_fitness();
+
 }
 
 float lrand(void) {
