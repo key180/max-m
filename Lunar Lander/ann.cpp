@@ -112,4 +112,26 @@ void network::print_network_weights() {
                 << " ]\n" << endl;
     }
 }
+
+void network::set_weights(float in[2][NODES][NODES+1], float final_ins[2][NODES+1]){
+    //takes an input arraw in the format weights[layer][node][weight]
+    //[0,1] [0...5] [0...5, 6 is bias weight]
+   
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < NODES; j++) {
+            for (int k = 0; k < NODES; k++) {
+                hidden_layer[i].column_of_nodes[j].weights[k] = in[i][j][k];
+            }
+            hidden_layer[i].column_of_nodes[j].bias_weight = in[i][j][6];
+        }
+    }
+    
+    //Set up two output nodes
+    for (int j = 0; j < 2 ; j++) {
+        for (int k = 0; k < NODES; k++) {
+            outputs[j].weights[k] = final_ins[j][k];
+        }
+        outputs[j].bias_weight = final_ins[j][6];
+    }
+}
     
