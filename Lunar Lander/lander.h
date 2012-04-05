@@ -54,8 +54,8 @@ void lander::control(network test_network) {
     burn = burn_thrust[0];
     thrust = burn_thrust[1];
     
-    cout << "Burn: " << burn << endl;
-    cout << "Thrust: " << thrust << endl;
+//    cout << "Burn: " << burn << endl;
+//    cout << "Thrust: " << thrust << endl;
 
 }
 
