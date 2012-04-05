@@ -19,6 +19,7 @@ public:
     void test(void);
     void landedDraw(void);
     void control(network test_network);
+    float get_fitness();
 private:
     float height;
     float xPosition;
@@ -29,7 +30,17 @@ private:
     float burn;
     float thrust;
 };
-
+float lander::get_fitness(){
+    //expert knowledge - return fitness based on y velocity and x position
+    //fitness from 0 to ...? shouldn't overflow though. Max ~~ 100
+    //0 is best fitness
+    
+    float tempposition = xPosition;
+    if (tempposition < 0){ // make float positive
+        tempposition *= -1;
+    }
+    return (tempposition) + (Yvelocity);
+}
 void lander::control(network test_network) {
     // calculates the burn - vertical adjustments
     // and the thrust - horizontal adjustments
@@ -42,6 +53,9 @@ void lander::control(network test_network) {
     test_network.calculate_output(input_sensors, burn_thrust);
     burn = burn_thrust[0];
     thrust = burn_thrust[1];
+    
+    cout << "Burn: " << burn << endl;
+    cout << "Thrust: " << thrust << endl;
 
 }
 
@@ -68,8 +82,8 @@ lander::lander(void) {
 
 void lander::update(network test_network) {
     // update the lander's altitude 
-    Yvelocity += ACCELERATION; // apply acceleration
     control(test_network); // calculate burn and thrust
+    Yvelocity += ACCELERATION; // apply acceleration
     if (fuel < burn) // if insuficient fuel, use the rest for burn
         burn = fuel;
     fuel -= fabs(burn); // subtract fuel
@@ -89,6 +103,7 @@ void lander::print(void) {
     cout << "Y-Velocity: " << Yvelocity << "  ";
     cout << "X-Position: " << xPosition << "  ";
     cout << "X-Velocity: " << Xvelocity << "   ";
+    cout << "Wind: " << WIND << "   ";
     cout << "Fuel: " << fuel << endl;
 
 }
