@@ -42,10 +42,12 @@ public:
      
     neuron outputs[2]; // 2 outputs: burn and thrust
     layer hidden_layer[2];
+    float fitness;
     
     void calculate_output(float in[], float out[]);
     void randomize_network_weights();
     void print_network_weights();
+    void set_weights(float in[2][NODES][NODES+1], float final_ins[2][NODES+1]);
 };
 
 #endif	/* ANN_H */
