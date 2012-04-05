@@ -12,6 +12,7 @@ const float MAX_SAFE_X = 0.2;
 class lander {
 public:
     lander(void);
+    void init();
     int landed_test(void) {return landed;}
     void update(network test_network);
     void print(void);
@@ -39,7 +40,7 @@ float lander::get_fitness(){
     if (tempposition < 0){ // make float positive
         tempposition *= -1;
     }
-    return (tempposition) + (Yvelocity);
+    return (tempposition)/MAX_SAFE_X + (Yvelocity)/MAX_SAFE_LANDING_SPEED; // 20x scaling to get to same importance level
 }
 void lander::control(network test_network) {
     // calculates the burn - vertical adjustments
@@ -80,6 +81,17 @@ lander::lander(void) {
     WIND = 0.2 * (lrand() - 0.5); // random wind 
 }
 
+void lander::init(){ // copy of constructor for testing purposes
+    height = 100.0; // starting height
+    Yvelocity = 10.0 * lrand(); // random starting velocity
+    landed = 0; // haven't landed yet
+    fuel = 100.0; // starting fuel
+    ACCELERATION = 2.0; // could use different acceleration for diff. planets.
+    xPosition = 0;
+    Xvelocity = 0;
+    WIND = 0.2 * (lrand() - 0.5); // random wind 
+}
+
 void lander::update(network test_network) {
     // update the lander's altitude 
     control(test_network); // calculate burn and thrust
@@ -99,11 +111,11 @@ void lander::update(network test_network) {
 
 void lander::print(void) {
     //  For command line version
-    cout << "Height: " << height << "  ";
-    cout << "Y-Velocity: " << Yvelocity << "  ";
-    cout << "X-Position: " << xPosition << "  ";
-    cout << "X-Velocity: " << Xvelocity << "   ";
-    cout << "Wind: " << WIND << "   ";
-    cout << "Fuel: " << fuel << endl;
+    cout << "Height, " << height << " , ";
+    cout << "Y-Velocity:, " << Yvelocity << " , ";
+    cout << "X-Position:, " << xPosition << " , ";
+    cout << "X-Velocity:, " << Xvelocity << " , ";
+    cout << "Wind:, " << WIND << " , ";
+    cout << "Fuel:, " << fuel << endl;
 
 }
