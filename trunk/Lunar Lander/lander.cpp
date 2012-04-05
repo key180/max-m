@@ -38,7 +38,7 @@ individual::individual(){
     //initialize individual
     
     //initialize zeros
-        for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         for (int j = 0; j < NODES; j++) {
             for (int k = 0; k < NODES + 1; k++) {
                 in[i][j][k] = 0; //Scaled from -5 to 5;
@@ -80,7 +80,7 @@ individual::individual(){
     final_ins[1][6] = -.8; //bias thrust
 }
 
-float test_weights_fitness(individual& test_weights);
+float test_weights_fitness(individual& test_weights, int print_on);
 void mutate_individual(individual& input);
 
 int main() {
@@ -93,7 +93,7 @@ int main() {
     float fitnesspergen[GEN];
     individual current;
     individual test;
-    test_weights_fitness(current);
+    test_weights_fitness(current,0);
     
     for(int gen = 0; gen < GEN; gen++){
         
@@ -101,7 +101,7 @@ int main() {
         
         test = current; // !@#$!@^% Later Check that this is indeed deep copying (NOT matching pointer)
         mutate_individual(test);
-        test_weights_fitness(test);
+        test_weights_fitness(test,0);
         if (test.fitness < current.fitness){ // If it has a better fitness, update it
             current = test; // Again check deeep copying
         }
@@ -109,6 +109,7 @@ int main() {
         fitnesspergen[gen] = current.fitness;
           
     }
+    test_weights_fitness(current,1);
     
     fileout.open("fit_per_gen.txt");
     for (int gen = 0; gen < GEN; gen++) {
@@ -118,33 +119,49 @@ int main() {
     
     //run game once with output now to see how it does.
     
+    
     return 0;
 }
 
-float test_weights_fitness(individual& test_weights) {
+float test_weights_fitness(individual& test_weights, int print_on) {
     //test an individual (set of network weights) and update the individual's fitness
     lander l;
     network test_network;
+    float average;
+    float running_sum = 0;
+    float current_fitness;
+    const int NUM_TRIALS = 10;
     
-    test_network.set_weights(test_weights.in, test_weights.final_ins);
-    //test_network.print_network_weights();
-    
-    //main loop run the lunar lander game
-    while (!l.landed_test()) {
-        l.update(test_network); // update position and velocity
-        //l.print();
-        l.test(); // test for landing/crash
-    }
+    for (int q = 0; q < NUM_TRIALS; q++) {
+        l.init();
+        test_network.set_weights(test_weights.in, test_weights.final_ins);
+        //test_network.print_network_weights();
 
-    if (l.landed_test() == 1) {
-        //            cout << "$$$$SAFE$$$$" << endl;
+        //main loop run the lunar lander game
+        while (!l.landed_test()) {
+            l.update(test_network); // update position and velocity
+            if (print_on == 1 && q == 0) {
+                l.print();
+            }
+            l.test(); // test for landing/crash
+        }
+
+        if (print_on == 1) {
+            if (l.landed_test() == 1) {
+                cout << "1" << endl; // safe
+            }
+            if (l.landed_test() == 2) {
+                cout << "0" << endl; // crash
+            }
+        }
+        current_fitness = l.get_fitness();
+    
+        running_sum += current_fitness;
     }
-    if (l.landed_test() == 2) {
-        //            cout << "$$$$CRASH$$$$" << endl;
-    }
-        
-    test_weights.fitness = l.get_fitness();
-    return  test_weights.fitness;
+    
+    average = running_sum / (1.0 * NUM_TRIALS);
+    test_weights.fitness = average;
+    return average; // return average fitness
 
 }
 
