@@ -6,6 +6,7 @@
 #include<ctime>
 #include<cmath>
 #include<iostream>
+#include<cstdlib>
 using namespace std;
 
 
@@ -24,7 +25,7 @@ float lrand(void); // random 0-1
 
 class individual{
 public:
-    //individual is a container class for weights
+    //individual is a container class for weights for whole neural network
     float in[2][NODES][NODES + 1]; // 3D array [column][node in column][weight in column]
     float final_ins[2][NODES + 1];
     float fitness;
@@ -34,19 +35,34 @@ public:
 };
 
 individual::individual(){
-    //initialize w random values
-    for (int i = 0; i < 2; i++) {
+    //initialize individual
+    
+    //initialize zeros
+        for (int i = 0; i < 2; i++) {
         for (int j = 0; j < NODES; j++) {
             for (int k = 0; k < NODES + 1; k++) {
-                in[i][j][k] = rand() / float(RAND_MAX)*10 - 5; //Scaled from -5 to 5;
+                in[i][j][k] = 0; //Scaled from -5 to 5;
             }
         }
     }
     for (int j = 0; j < 2; j++) {
         for (int k = 0; k < NODES + 1; k++) {
-            final_ins[j][k] = rand() / float(RAND_MAX)*10 - 5; //Scaled from -5 to 5
+            final_ins[j][k] = 0; //Scaled from -5 to 5
         }
     }
+    
+//    for (int i = 0; i < 2; i++) {
+//        for (int j = 0; j < NODES; j++) {
+//            for (int k = 0; k < NODES + 1; k++) {
+//                in[i][j][k] = rand() / float(RAND_MAX)*10 - 5; //Scaled from -5 to 5;
+//            }
+//        }
+//    }
+//    for (int j = 0; j < 2; j++) {
+//        for (int k = 0; k < NODES + 1; k++) {
+//            final_ins[j][k] = rand() / float(RAND_MAX)*10 - 5; //Scaled from -5 to 5
+//        }
+//    }
     
         //Setting a few weights by hand -- expert knowledge
     in[0][0][0] = -1.0/100.0; // height * 1/100
@@ -64,10 +80,11 @@ individual::individual(){
     final_ins[1][6] = -.8; //bias thrust
 }
 
-float test_weights_fitness(individual test_weights);
+float test_weights_fitness(individual& test_weights);
+void mutate_individual(individual& input);
 
 int main() {
-    const int GEN = 100; // # of generations
+    const int GEN = 10000; // # of generations
     const int POPSIZE = 100;
     
     srand(time(NULL));
@@ -76,12 +93,21 @@ int main() {
     float fitnesspergen[GEN];
     individual current;
     individual test;
+    test_weights_fitness(current);
     
     for(int gen = 0; gen < GEN; gen++){
         
+        //Be careful about deep copying / shallow copying here
         
-       // fitnesspergen[gen] = test_weights_fitness(population[0]); // Change to best fitness in population
-        
+        test = current; // !@#$!@^% Later Check that this is indeed deep copying (NOT matching pointer)
+        mutate_individual(test);
+        test_weights_fitness(test);
+        if (test.fitness < current.fitness){ // If it has a better fitness, update it
+            current = test; // Again check deeep copying
+        }
+
+        fitnesspergen[gen] = current.fitness;
+          
     }
     
     fileout.open("fit_per_gen.txt");
@@ -90,10 +116,13 @@ int main() {
     }
     fileout.close();
     
+    //run game once with output now to see how it does.
+    
     return 0;
 }
 
-float test_weights_fitness(individual test_weights) {
+float test_weights_fitness(individual& test_weights) {
+    //test an individual (set of network weights) and update the individual's fitness
     lander l;
     network test_network;
     
@@ -113,9 +142,32 @@ float test_weights_fitness(individual test_weights) {
     if (l.landed_test() == 2) {
         //            cout << "$$$$CRASH$$$$" << endl;
     }
+        
+    test_weights.fitness = l.get_fitness();
+    return  test_weights.fitness;
 
-    return l.get_fitness();
+}
 
+void mutate_individual(individual& input) {
+    //Randomly mutate a weight of an individual
+    //
+    
+//    float in[2][NODES][NODES + 1]; // 3D array [column][node in column][weight in column]
+//    float final_ins[2][NODES + 1];
+    int r1 = rand() % 2; //Random number in range 0 to 1 for hidden layer #
+    int r2_output = rand() % 2; //Random number in range 0 to 1 for output
+    int r2 = rand() % (NODES + 2); // Random number in range 0 to NODES + 2 - 1
+    int r3 = rand() % NODES + 1; // Random number 0 to NODES + 1 - 1
+    
+    float new_random_weight = rand()/float(RAND_MAX)*10 - 5; // -5 to 5 floating point
+    
+    if (r2 == NODES || r2 == NODES +1){ // Pick output nodes to modify
+        input.final_ins[r2_output][r3] = new_random_weight;
+    }
+    
+    else{ // Pick non output nodes to modify
+        input.in[r1][r2][r3] = new_random_weight;
+    }
 }
 
 float lrand(void) {
