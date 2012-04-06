@@ -130,7 +130,7 @@ float test_weights_fitness(individual& test_weights, int print_on) {
     float average;
     float running_sum = 0;
     float current_fitness;
-    const int NUM_TRIALS = 10;
+    const int NUM_TRIALS = 100;
     
     for (int q = 0; q < NUM_TRIALS; q++) {
         l.init();
