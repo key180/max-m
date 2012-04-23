@@ -10,6 +10,7 @@
 fuzzy::fuzzy() {
 }
 
+
 fuzzy::fuzzy(const fuzzy& orig) {
 }
 
