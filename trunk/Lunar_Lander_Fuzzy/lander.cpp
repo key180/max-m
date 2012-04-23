@@ -66,6 +66,7 @@ float test_fitness(int print_on) {
     float current_fitness;
     const long NUM_TRIALS = 1000000;
     long successcount = 0;
+    long failcount = 0;
     
     for (int q = 0; q < NUM_TRIALS; q++) {
         l.init();
@@ -91,6 +92,12 @@ float test_fitness(int print_on) {
                 //cout << "0" << endl; 
                 // crash
                 //cout << "Crash" << endl;
+                
+                if (failcount < 10){
+                    cout << "FAILURE" << endl;
+                    l.print();
+                }
+                failcount++;
             }
         }
         current_fitness = l.get_fitness();
