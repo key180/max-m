@@ -62,10 +62,10 @@ void lander::control() {
     //cout << fXpos.left << " : " << fXpos.right << endl;
     
     if (fXpos.left > fXpos.right){
-        fthrust = fXpos.left*.15;
+        fthrust = -WIND;
     }
     if (fXpos.right > fXpos.left){
-        fthrust = -fXpos.right*.15;
+        fthrust = -WIND;
     }
     
     //****
@@ -102,7 +102,7 @@ lander::lander(void) {
     ACCELERATION = -2.0; // could use different acceleration for diff. planets.
     xPosition = 0;
     Xvelocity = 0;
-    WIND = 0.2 * (lrand() - 0.5); // random wind 
+    //WIND = 0.2 * (lrand() - 0.5); // random wind 
 }
 
 void lander::init(){ // copy of constructor for testing purposes
@@ -127,7 +127,7 @@ void lander::update() {
     if (fuel < thrust) // if insuficient fuel, use the rest for thrust
         thrust = fuel;
     fuel -= fabs(thrust); // subtract fuel
-    Xvelocity += thrust; // apply thrust
+    Xvelocity = thrust; // apply thrust
 
     height += (Yvelocity); //  subtract because moving down
     xPosition += (Xvelocity + WIND); //  wind 
