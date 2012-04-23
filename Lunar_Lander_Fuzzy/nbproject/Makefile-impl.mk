@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Lunar Lander
+PROJECTNAME=Lunar_Lander_Fuzzy
 
 # Active Configuration
 DEFAULTCONF=Debug

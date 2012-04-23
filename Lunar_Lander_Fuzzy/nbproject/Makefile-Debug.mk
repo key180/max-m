@@ -34,9 +34,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ann.o \
-	${OBJECTDIR}/lander.o \
-	${OBJECTDIR}/newClass.o
+	${OBJECTDIR}/fuzzy.o \
+	${OBJECTDIR}/lander.o
 
 
 # C Compiler Flags
@@ -57,26 +56,21 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander_fuzzy.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander_fuzzy.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander_fuzzy ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/ann.o: ann.cpp 
+${OBJECTDIR}/fuzzy.o: fuzzy.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/ann.o ann.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fuzzy.o fuzzy.cpp
 
 ${OBJECTDIR}/lander.o: lander.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/lander.o lander.cpp
-
-${OBJECTDIR}/newClass.o: newClass.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/newClass.o newClass.cpp
 
 # Subprojects
 .build-subprojects:
@@ -84,7 +78,7 @@ ${OBJECTDIR}/newClass.o: newClass.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lunar_lander_fuzzy.exe
 
 # Subprojects
 .clean-subprojects:
