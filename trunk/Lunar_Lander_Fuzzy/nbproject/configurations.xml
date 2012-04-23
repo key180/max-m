@@ -4,9 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>ann.h</itemPath>
+      <itemPath>fuzzy.h</itemPath>
       <itemPath>lander.h</itemPath>
-      <itemPath>newClass.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,9 +14,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>ann.cpp</itemPath>
+      <itemPath>fuzzy.cpp</itemPath>
       <itemPath>lander.cpp</itemPath>
-      <itemPath>newClass.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"

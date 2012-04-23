@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=Cygwin-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
-CND_ARTIFACT_NAME_Debug=lunar_lander
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/lunar_lander
+CND_ARTIFACT_NAME_Debug=lunar_lander_fuzzy
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/lunar_lander_fuzzy
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
-CND_PACKAGE_NAME_Debug=lunarlander.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/lunarlander.tar
+CND_PACKAGE_NAME_Debug=lunarlanderfuzzy.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/lunarlanderfuzzy.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
-CND_ARTIFACT_NAME_Release=lunar_lander
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/lunar_lander
+CND_ARTIFACT_NAME_Release=lunar_lander_fuzzy
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/lunar_lander_fuzzy
 CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
-CND_PACKAGE_NAME_Release=lunarlander.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/lunarlander.tar
+CND_PACKAGE_NAME_Release=lunarlanderfuzzy.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/lunarlanderfuzzy.tar
 #
 # include compiler specific variables
 #

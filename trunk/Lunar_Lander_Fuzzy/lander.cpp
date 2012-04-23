@@ -9,8 +9,6 @@
 #include<cstdlib>
 using namespace std;
 
-
-
 /**************************
  * Function Declarations
  *
@@ -36,53 +34,34 @@ individual::individual(){
 
 }
 
-float test_weights_fitness(individual& test_weights, int print_on);
+float test_fitness(int print_on);
 void mutate_individual(individual& input);
 
 int main() {
-    const int GEN = 10000; // # of generations
-    const int POPSIZE = 100;
+    const int GEN = 1; // # of generations
+    const int POPSIZE = 1;
     
     srand(time(NULL));
     ofstream fileout;
     
     float fitnesspergen[GEN];
-    individual current;
-    individual test;
-    test_weights_fitness(current,0);
+    test_fitness(1);
     
     for(int gen = 0; gen < GEN; gen++){
-        
-        //Be careful about deep copying / shallow copying here
-        
-        test = current; // !@#$!@^% Later Check that this is indeed deep copying (NOT matching pointer)
-        mutate_individual(test);
-        test_weights_fitness(test,0);
-        if (test.fitness < current.fitness){ // If it has a better fitness, update it
-            current = test; // Again check deeep copying
-        }
-
-        fitnesspergen[gen] = current.fitness;
-          
+        //test_fitness(0);
     }
-    test_weights_fitness(current,1);
-    
+    test_fitness(1);
     fileout.open("fit_per_gen.txt");
     for (int gen = 0; gen < GEN; gen++) {
         fileout << gen << ", " << fitnesspergen[gen] << endl;
     }
     fileout.close();
-    
-    //run game once with output now to see how it does.
-    
-    
     return 0;
 }
 
-float test_weights_fitness(int print_on) {
-    //test an individual (set of network weights) and update the individual's fitness
+float test_fitness(int print_on) {
+    //test an individual fuzzy control
     lander l;
-
     float average;
     float running_sum = 0;
     float current_fitness;
@@ -90,7 +69,9 @@ float test_weights_fitness(int print_on) {
     
     for (int q = 0; q < NUM_TRIALS; q++) {
         l.init();
-
+        if (print_on == 1 && q == 0) {
+            l.print();
+        }
         //main loop run the lunar lander game
         while (!l.landed_test()) {
             l.update(); // update position and velocity
@@ -99,22 +80,22 @@ float test_weights_fitness(int print_on) {
             }
             l.test(); // test for landing/crash
         }
-
         if (print_on == 1) {
             if (l.landed_test() == 1) {
-                cout << "1" << endl; // safe
+                cout << "1" << endl; 
+                // safe
+                cout << "Safe" << endl;
             }
             if (l.landed_test() == 2) {
-                cout << "0" << endl; // crash
+                cout << "0" << endl; 
+                // crash
+                cout << "Crash" << endl;
             }
         }
         current_fitness = l.get_fitness();
-    
         running_sum += current_fitness;
     }
-    
     average = running_sum / (1.0 * NUM_TRIALS);
-
     return average; // return average fitness
 }
 
@@ -123,6 +104,6 @@ void mutate_individual(individual& input) {
 }
 
 float lrand(void) {
-    
+    //return random floating point 0.0 to 1.
     return (rand() / float(RAND_MAX));
 }

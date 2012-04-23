@@ -15,4 +15,3 @@ fuzzy::fuzzy(const fuzzy& orig) {
 
 fuzzy::~fuzzy() {
 }
-
