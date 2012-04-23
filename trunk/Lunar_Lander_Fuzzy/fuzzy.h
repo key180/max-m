@@ -8,15 +8,8 @@
 #ifndef FUZZY_H
 #define	FUZZY_H
 
-
-
 class fuzzy {
 public:
-    float burn;
-    float thrust;
-    
-
-        
     
     fuzzy();
     fuzzy(const fuzzy& orig);
@@ -25,31 +18,23 @@ private:
 
 };
 
-class FuzzyHeight{
+class FuzzyYvel {
 public:
-    double veryclose,
-            close,
-            far;
-    void FuzzifyInput(double height_input){
-        //input a height as it's value then assign fuzzy sets values
-        double crossovers[4] = {0,2,10,150};
-    }
+    FuzzyYvel();
+    float safe,
+            fast;
+
+    void FuzzifyInput(float Yvel);
+
 };
 
-class FuzzyXpos{
+class FuzzyXpos {
 public:
-    double left,
-            center,
-            right;
-    
-    void FuzzifyInput(double pos_input){
-        //input a x position's double value then assign the corresponding fuzzy set values
-        if (pos_input <= MIN_SAFE_X){
-            left = 1;
-            
-        }
-        
-    }
+    FuzzyXpos();
+    float left, // define the two fuzzy sets
+    right;
+
+    void FuzzifyInput(float pos_input);
 };
 
 
