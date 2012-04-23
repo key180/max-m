@@ -92,7 +92,7 @@ void lander::update() {
     if (fuel < thrust) // if insuficient fuel, use the rest for thrust
         thrust = fuel;
     fuel -= fabs(thrust); // subtract fuel
-    Xvelocity -= thrust; // apply thrust
+    Xvelocity += thrust; // apply thrust
 
     height += (Yvelocity); //  subtract because moving down
     xPosition += (Xvelocity + WIND); //  wind 
