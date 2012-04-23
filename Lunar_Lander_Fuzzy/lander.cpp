@@ -45,12 +45,11 @@ int main() {
     ofstream fileout;
     
     float fitnesspergen[GEN];
-    test_fitness(1);
     
     for(int gen = 0; gen < GEN; gen++){
-        //test_fitness(0);
+        fitnesspergen[gen] = test_fitness(1);
     }
-    test_fitness(1);
+    //test_fitness(1);
     fileout.open("fit_per_gen.txt");
     for (int gen = 0; gen < GEN; gen++) {
         fileout << gen << ", " << fitnesspergen[gen] << endl;
@@ -65,7 +64,8 @@ float test_fitness(int print_on) {
     float average;
     float running_sum = 0;
     float current_fitness;
-    const int NUM_TRIALS = 1;
+    const long NUM_TRIALS = 1000000;
+    long successcount = 0;
     
     for (int q = 0; q < NUM_TRIALS; q++) {
         l.init();
@@ -82,18 +82,22 @@ float test_fitness(int print_on) {
         }
         if (print_on == 1) {
             if (l.landed_test() == 1) {
-                cout << "1" << endl; 
+                successcount++;
+                //cout << "1" << endl; 
                 // safe
-                cout << "Safe" << endl;
+                //cout << "Safe" << endl;
             }
             if (l.landed_test() == 2) {
-                cout << "0" << endl; 
+                //cout << "0" << endl; 
                 // crash
-                cout << "Crash" << endl;
+                //cout << "Crash" << endl;
             }
         }
         current_fitness = l.get_fitness();
         running_sum += current_fitness;
+    }
+    if (print_on == 1){
+        cout << "Success Count: " << successcount << " :: # of Trials = " << NUM_TRIALS << endl;
     }
     average = running_sum / (1.0 * NUM_TRIALS);
     return average; // return average fitness

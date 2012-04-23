@@ -33,6 +33,7 @@ float lander::get_fitness(){
     //expert knowledge - return fitness based on y velocity and x position
     //fitness from 0 to ...? shouldn't overflow though. Max ~~ 100
     //0 is best fitness
+    //Max fitness for a safe landing is 2.0
     float tempposition = xPosition;
     if (tempposition < 0){ // make float positive
         tempposition *= -1;
@@ -46,10 +47,37 @@ void lander::control() {
     
     // NODES = 6 inputs: height, xPosition, Yvelocity, Xvelocity, wind, and fuel.
     float input_sensors[6] = {height, xPosition, Yvelocity, Xvelocity, WIND, fuel};
-    float burn_thrust[2];
+   
+        
+    //Start of Fuzzy Logic
+    //********
+    float fburn,
+    fthrust; // fuzzy outcomes
 
-    burn = burn_thrust[0];
-    thrust = burn_thrust[1];
+    //****
+    //Controller for x position
+    //
+    FuzzyXpos fXpos;
+    fXpos.FuzzifyInput(xPosition);
+    //cout << fXpos.left << " : " << fXpos.right << endl;
+    
+    if (fXpos.left > fXpos.right){
+        fthrust = fXpos.left*.15;
+    }
+    if (fXpos.right > fXpos.left){
+        fthrust = -fXpos.right*.15;
+    }
+    
+    //****
+    //Controller for y velocity
+    //
+    FuzzyYvel fYvel;
+    fYvel.FuzzifyInput(Yvelocity);
+    
+    fburn = fYvel.safe*1.5 + fYvel.fast*7;
+    
+    burn = fburn;
+    thrust = fthrust;
     
 //    cout << "Burn: " << burn << endl;
 //    cout << "Thrust: " << thrust << endl;
@@ -78,7 +106,14 @@ lander::lander(void) {
 }
 
 void lander::init(){ // copy of constructor for testing purposes
-    lander();
+    height = 100.0; // starting height
+    Yvelocity = -10.0 * lrand(); // random starting velocity
+    landed = 0; // haven't landed yet
+    fuel = 100.0; // starting fuel
+    ACCELERATION = -2.0; // could use different acceleration for diff. planets.
+    xPosition = 0;
+    Xvelocity = 0;
+    WIND = 0.2 * (lrand() - 0.5); // random wind 
 }
 
 void lander::update() {
@@ -105,5 +140,7 @@ void lander::print(void) {
     cout << "X-Position:, " << xPosition << " , ";
     cout << "X-Velocity:, " << Xvelocity << " , ";
     cout << "Wind:, " << WIND << " , ";
-    cout << "Fuel:, " << fuel << endl;
+    cout << "Fuel:, " << fuel << " , ";
+    cout << "Burn:, " << burn << " , ";
+    cout << "Thrust:, " << thrust << " , " << endl;
 }
